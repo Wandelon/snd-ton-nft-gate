@@ -5,7 +5,8 @@
     "postinstall": "node scripts/patch-blueprint.cjs",
     "build": "blueprint build",
     "test": "blueprint test",
-    "deploy:testnet": "blueprint run deploy_testnet --testnet --mnemonic"
+    "deploy:testnet": "blueprint run deploy_testnet --testnet --mnemonic",
+    "deploy:tonconnect": "blueprint run deploy_testnet --testnet --tonconnect"
   },
   "dependencies": {
     "@ton/core": "^0.63.0",
