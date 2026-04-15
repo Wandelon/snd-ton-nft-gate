@@ -1,0 +1,10 @@
+{
+  "projects": [
+    {
+      "name": "snd_factory",
+      "path": "./contracts/Factory.tact",
+      "output": "./build/snd_factory"
+    }
+  ]
+}
+
