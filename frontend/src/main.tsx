@@ -52,16 +52,19 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <RootErrorBoundary>
       <TonConnectUIProvider
         manifestUrl={manifestUrl}
-        // Some networks block default bridges (tonapi/okx). Force a known-good bridge and wallet.
+        // Some networks block specific SSE bridges. For Tonkeeper we provide BOTH:
+        // - jsBridgeKey (works when dApp is opened inside Tonkeeper / extension)
+        // - bridgeUrl (fallback SSE bridge)
         walletsListConfiguration={{
           includeWallets: [
             {
               name: 'Tonkeeper',
               appName: 'tonkeeper',
-              imageUrl: 'https://ton-connect.github.io/demo-dapp-with-wallet/images/tonkeeper.png',
+              imageUrl: 'https://tonkeeper.com/assets/tonconnect-icon.png',
               aboutUrl: 'https://tonkeeper.com',
               universalLink: 'https://app.tonkeeper.com/ton-connect',
-              bridgeUrl: 'https://bridge.ton.org/bridge',
+              bridgeUrl: 'https://bridge.tonapi.io/bridge',
+              jsBridgeKey: 'tonkeeper',
               platforms: ['ios', 'android', 'chrome', 'firefox', 'macos', 'windows', 'linux']
             }
           ]
