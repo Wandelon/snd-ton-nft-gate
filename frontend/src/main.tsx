@@ -50,7 +50,23 @@ const manifestUrl = computeManifestUrl();
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <RootErrorBoundary>
-      <TonConnectUIProvider manifestUrl={manifestUrl}>
+      <TonConnectUIProvider
+        manifestUrl={manifestUrl}
+        // Some networks block default bridges (tonapi/okx). Force a known-good bridge and wallet.
+        walletsListConfiguration={{
+          includeWallets: [
+            {
+              name: 'Tonkeeper',
+              appName: 'tonkeeper',
+              imageUrl: 'https://ton-connect.github.io/demo-dapp-with-wallet/images/tonkeeper.png',
+              aboutUrl: 'https://tonkeeper.com',
+              universalLink: 'https://app.tonkeeper.com/ton-connect',
+              bridgeUrl: 'https://bridge.ton.org/bridge',
+              platforms: ['ios', 'android', 'chrome', 'firefox', 'macos', 'windows', 'linux']
+            }
+          ]
+        }}
+      >
         <App />
       </TonConnectUIProvider>
     </RootErrorBoundary>
