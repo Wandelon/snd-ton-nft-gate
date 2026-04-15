@@ -1,8 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
+import { Buffer } from 'buffer';
 import App from './App';
 import './styles.css';
+
+// Some TON libs expect global Buffer in browser builds.
+// Vite doesn't polyfill it automatically.
+(globalThis as any).Buffer = (globalThis as any).Buffer ?? Buffer;
 
 function computeManifestUrl(): string {
   const fromEnv = import.meta.env.VITE_TONCONNECT_MANIFEST_URL as string | undefined;

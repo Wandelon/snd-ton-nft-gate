@@ -6,6 +6,9 @@ const base = process.env.BASE_PATH ?? '/';
 
 export default defineConfig({
   plugins: [react()],
-  base
+  base,
+  define: {
+    global: 'globalThis'
+  }
 });
 
