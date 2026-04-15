@@ -57,3 +57,5 @@ Workflow лежит в `.github/workflows/pages.yml`.
 
 Нужно включить Pages в репозитории: Settings → Pages → Source = GitHub Actions.
 
+Pages URL: `https://wandelon.github.io/snd-ton-nft-gate/`
+
