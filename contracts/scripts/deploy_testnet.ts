@@ -18,7 +18,7 @@ export async function run(provider: NetworkProvider) {
     ? Address.parse(process.env.EXISTING_COLLECTION)
     : owner; // placeholder; MUST be changed post-deploy via SetCollection
 
-  await compile('snd_factory');
+  const code = await compile('snd_factory');
 
   const factory = provider.open(
     Factory.createFromConfig(
@@ -26,11 +26,12 @@ export async function run(provider: NetworkProvider) {
         owner,
         collection: existingCollection
       },
-      await provider.compile('snd_factory')
+      code
     )
   );
 
-  await factory.sendDeploy(provider.sender(), provider.network() === 'mainnet' ? 0.2 : 0.05);
+  const deployValue = provider.network() === 'mainnet' ? 200_000_000n : 50_000_000n;
+  await factory.sendDeploy(provider.sender(), deployValue);
   await provider.waitForDeploy(factory.address);
 
   provider.ui().write(`Factory deployed at: ${factory.address.toString()}`);
