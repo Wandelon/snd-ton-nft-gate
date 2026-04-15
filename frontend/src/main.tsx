@@ -4,11 +4,51 @@ import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import App from './App';
 import './styles.css';
 
+function computeManifestUrl(): string {
+  const fromEnv = import.meta.env.VITE_TONCONNECT_MANIFEST_URL as string | undefined;
+  if (fromEnv && fromEnv.trim()) return fromEnv.trim();
+
+  // GitHub Pages build doesn't have runtime .env; use BASE_URL.
+  // Example: origin=https://user.github.io, BASE_URL=/repo/
+  const base = (import.meta.env.BASE_URL as string) || '/';
+  const normalized = base.endsWith('/') ? base : `${base}/`;
+  return `${window.location.origin}${normalized}tonconnect-manifest.json`;
+}
+
+class RootErrorBoundary extends React.Component<{ children: React.ReactNode }, { err?: string }> {
+  state: { err?: string } = {};
+  static getDerivedStateFromError(e: unknown) {
+    return { err: e instanceof Error ? e.message : String(e) };
+  }
+  render() {
+    if (this.state.err) {
+      return (
+        <div className="page">
+          <div className="shell">
+            <div className="card">
+              <div style={{ fontWeight: 800, fontSize: 18 }}>App failed to start</div>
+              <div className="note" style={{ marginTop: 10 }}>
+                Проверьте, что `tonconnect-manifest.json` доступен и что сборка под GitHub Pages использует правильный base path.
+              </div>
+              <div className="error" style={{ marginTop: 12 }}>{this.state.err}</div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+const manifestUrl = computeManifestUrl();
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <TonConnectUIProvider manifestUrl={import.meta.env.VITE_TONCONNECT_MANIFEST_URL}>
-      <App />
-    </TonConnectUIProvider>
+    <RootErrorBoundary>
+      <TonConnectUIProvider manifestUrl={manifestUrl}>
+        <App />
+      </TonConnectUIProvider>
+    </RootErrorBoundary>
   </React.StrictMode>
 );
 
